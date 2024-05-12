@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Home from './Home';
+import Questions from './questions';
+import Test from './Test';
+import TestQuestion from './components/TestQuestion';
+import {Route, Routes} from 'react-router-dom';
+import Results from './ResultsPage';
+import Timesup from './Timesup';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   
+    <div className="App">      
+      <Routes>
+      <Route path="/" element={<Home/>} />
+      <Route path="questions" element={<Questions/>}/>
+      <Route path="test" element={<Test/>}/>
+      <Route path="testquestions" element={<TestQuestion />} />
+      <Route path="timesup" element={<Timesup />} />
+      <Route path="/quiz-completed" element={<Results/>} />
+     </Routes>
     </div>
+    
   );
 }
 

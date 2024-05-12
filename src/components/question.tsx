@@ -36,6 +36,7 @@ const QuestionComponent: React.FC<QuestionProps> = ({ question, onOptionSelect, 
 
   return (
     <div className="question-container">
+   
       <div className="question-title">
         <h2>{title}</h2>
         <div onClick={handleDeleteClick}>Delete question</div>

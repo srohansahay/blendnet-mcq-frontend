@@ -28,6 +28,7 @@ const Questions: React.FC = () => {
 
   return (
     <div>
+
       <Link to="/">Go to home page</Link>
       <h1>List of Questions</h1>
       <QuestionEditorComponent /> {/* Render the QuestionsEditor component */}

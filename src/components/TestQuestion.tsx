@@ -14,14 +14,20 @@ const TestQuestion: React.FC = () => {
   const [score, setScore] = useState<number>(0);
 
   useEffect(() => {
-   try {
-    const selectedQuestions = questionsData;
-    if (selectedQuestions) {
-     setQuestions(selectedQuestions);
-   }
-   } catch (error) {
-    console.error('Error fetching question:', error);
-   }
+    // Fetch questions from backend server when the component mounts
+    fetch('http://34.16.160.151:5000/api/questions/')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch questions');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setQuestions(data);
+      })
+      .catch(error => {
+        console.error('Error fetching questions:', error);
+      });
   }, []);
 
   useEffect(() => {
@@ -78,6 +84,7 @@ const TestQuestion: React.FC = () => {
  
   return (
     <div>
+        
       {questions.length > 0 ? (
         <>
           <QuestionComponent

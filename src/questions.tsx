@@ -11,7 +11,7 @@ const Questions: React.FC = () => {
 
   useEffect(() => {
     // Fetch questions from backend server when the component mounts
-    fetch('https://34.16.160.151:5000/api/questions/')
+    fetch('http://34.16.160.151:5000/api/questions/')
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch questions');

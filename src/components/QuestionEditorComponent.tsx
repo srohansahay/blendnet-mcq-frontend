@@ -25,7 +25,7 @@ const QuestionEditorComponent: React.FC = () => {
 const handleSubmit = async () => {
   try {
     const newQuestionWithId = { ...formData, id: uuidv4() }; // Include a UUID for the new question
-    const response = await fetch('https://34.16.160.151:5000/api/questions', {
+    const response = await fetch('http://34.16.160.151:5000/api/questions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

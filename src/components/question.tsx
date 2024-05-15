@@ -21,7 +21,7 @@ const QuestionComponent: React.FC<QuestionProps> = ({ question, onOptionSelect, 
 
   const handleDeleteClick = async () => {
     try {
-      const response = await fetch(`http://34.16.160.151:5000/api/questions/${question.id}`, {
+      const response = await fetch(`https://34.16.160.151:5000/api/questions/${question.id}`, {
         method: 'DELETE'
       });
       if (response.ok) {

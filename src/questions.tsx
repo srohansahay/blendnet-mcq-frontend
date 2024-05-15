@@ -11,7 +11,7 @@ const Questions: React.FC = () => {
 
   useEffect(() => {
     // Fetch questions from backend server when the component mounts
-    fetch('http://34.16.160.151:5000/api/questions/')
+    fetch('https://34.16.160.151:5000/api/questions/')
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch questions');
@@ -28,10 +28,9 @@ const Questions: React.FC = () => {
 
   return (
     <div>
-
       <Link to="/">Go to home page</Link>
       <h1>List of Questions</h1>
-      <QuestionEditorComponent /> {/* Render the QuestionsEditor component */}
+      <QuestionEditorComponent />
       {questions.map((question: Question) => (
         <QuestionComponent key={question.id} question={question} showCorrectOption={true} />
       ))}

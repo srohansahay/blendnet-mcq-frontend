@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuestionComponent from './question';
-import { Question } from '../types';
+import QuestionComponent from './question.tsx';
+import { Question } from '../types.tsx';
 import { collection, DocumentData, getDocs, orderBy, query, QuerySnapshot } from 'firebase/firestore/lite';
 import { db } from '../firebase';
 

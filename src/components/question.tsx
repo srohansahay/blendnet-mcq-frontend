@@ -12,7 +12,7 @@ interface QuestionProps {
 }
 
 const QuestionComponent: React.FC<QuestionProps> = ({ question,index, onOptionSelect, showCorrectOption }) => {
-  const { title, options, correct_option, url, id } = question;
+  const { title, options, correct_option, url} = question;
 
   const handleOptionClick = (option: string) => {
     if(onOptionSelect) {onOptionSelect(option);}

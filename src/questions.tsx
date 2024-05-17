@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Question } from './types';
-import QuestionComponent from './components/question.tsx';
-import QuestionEditorComponent from './components/QuestionEditorComponent.tsx'; // Import the QuestionsEditor component
+import QuestionComponent from './components/question';
+import QuestionEditorComponent from './components/QuestionEditorComponent'; // Import the QuestionsEditor component
 import { db } from './firebase';
 import { collection, DocumentData, getDocs, orderBy, query, QuerySnapshot } from 'firebase/firestore/lite';
 

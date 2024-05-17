@@ -1,11 +1,10 @@
 import './App.css';
-import Home from './Home.tsx';
-import Questions from './questions.tsx';
-import TestQuestion from './components/TestQuestion.tsx';
+import Home from './Home';
+import Questions from './questions';
+import TestQuestion from './components/TestQuestion';
 import {Route, Routes} from 'react-router-dom';
-import Results from './ResultsPage.tsx';
-import Timesup from './Timesup.tsx';
-import React from 'react';
+import Results from './ResultsPage';
+import Timesup from './Timesup';
 
 function App() {
   return (

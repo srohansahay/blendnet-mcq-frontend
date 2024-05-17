@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Question } from './types';
-import questionsData from './questionsdata.json';
 import QuestionComponent from './components/question';
 import QuestionEditorComponent from './components/QuestionEditorComponent'; // Import the QuestionsEditor component
+import { db } from './firebase';
+import { collection, DocumentData, getDocs, orderBy, query, QuerySnapshot } from 'firebase/firestore/lite';
 
 const Questions: React.FC = () => {
 
   const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
-    // Fetch questions from backend server when the component mounts
-    fetch('https://34.16.160.151:5000/api/questions/')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch questions');
-        }
-        return response.json();
-      })
-      .then(data => {
+
+    const fetchQuestions = async () => {
+      try {
+        const q = query(collection(db, 'questions'), orderBy('createdAt', 'desc')); // Order by createdAt timestamp in descending order
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
+        const data: Question[] = [];
+        querySnapshot.forEach((doc) => {
+          const questionData = doc.data() as Question;
+          data.push({
+            id: doc.id,
+            title: questionData.title,
+            options: questionData.options,
+            url: questionData.url,
+            correct_option: questionData.correct_option,
+          });
+        });
         setQuestions(data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching questions:', error);
-      });
+      }
+    };
+
+    fetchQuestions();
   }, []);
 
   return (
@@ -31,8 +41,8 @@ const Questions: React.FC = () => {
       <Link to="/">Go to home page</Link>
       <h1>List of Questions</h1>
       <QuestionEditorComponent />
-      {questions.map((question: Question) => (
-        <QuestionComponent key={question.id} question={question} showCorrectOption={true} />
+      {questions.map((question: Question, index: number) => (
+        <QuestionComponent key={question.id} question={question} index={index} showCorrectOption={true} />
       ))}
     </div>
   );

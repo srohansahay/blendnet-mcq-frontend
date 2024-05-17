@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuestionComponent from './question';
 import { Question } from '../types';
-import questionsData from '../questionsdata.json';
+import { collection, DocumentData, getDocs, orderBy, query, QuerySnapshot } from 'firebase/firestore/lite';
+import { db } from '../firebase';
 
 const TestQuestion: React.FC = () => {
   const navigate = useNavigate();
@@ -14,20 +15,28 @@ const TestQuestion: React.FC = () => {
   const [score, setScore] = useState<number>(0);
 
   useEffect(() => {
-    // Fetch questions from backend server when the component mounts
-    fetch('https://34.16.160.151:5000/api/questions/')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch questions');
-        }
-        return response.json();
-      })
-      .then(data => {
+    const fetchQuestions = async () => {
+      try {
+        const q = query(collection(db, 'questions'), orderBy('createdAt', 'desc')); // Order by createdAt timestamp in descending order
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
+        const data: Question[] = [];
+        querySnapshot.forEach((doc) => {
+          const questionData = doc.data() as Question;
+          data.push({
+            id: doc.id,
+            title: questionData.title,
+            options: questionData.options,
+            url: questionData.url,
+            correct_option: questionData.correct_option,
+          });
+        });
         setQuestions(data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching questions:', error);
-      });
+      }
+    };
+
+    fetchQuestions();
   }, []);
 
   useEffect(() => {
@@ -84,10 +93,10 @@ const TestQuestion: React.FC = () => {
  
   return (
     <div>
-        
       {questions.length > 0 ? (
         <>
           <QuestionComponent
+            index={currentQuestionIndex}
             question={questions[currentQuestionIndex]}
             onOptionSelect={handleOptionSelect}
           />

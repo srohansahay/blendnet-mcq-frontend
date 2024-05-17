@@ -1,15 +1,18 @@
 import React from 'react';
 import { Question } from '../types'; // Import the type/interface for questions
 import './QuestionComponent.css'
+import { deleteDoc, doc } from 'firebase/firestore/lite';
+import { db } from '../firebase';
 
 interface QuestionProps {
   question: Question;
+  index: number;
   onOptionSelect?: (option: string) => void; // Include onOptionSelect function
   showCorrectOption? : boolean
 }
 
-const QuestionComponent: React.FC<QuestionProps> = ({ question, onOptionSelect, showCorrectOption }) => {
-  const { title, options, correct_option, url } = question;
+const QuestionComponent: React.FC<QuestionProps> = ({ question,index, onOptionSelect, showCorrectOption }) => {
+  const { title, options, correct_option, url, id } = question;
 
   const handleOptionClick = (option: string) => {
     if(onOptionSelect) {onOptionSelect(option);}
@@ -21,14 +24,9 @@ const QuestionComponent: React.FC<QuestionProps> = ({ question, onOptionSelect, 
 
   const handleDeleteClick = async () => {
     try {
-      const response = await fetch(`https://34.16.160.151:5000/api/questions/${question.id}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-         console.log('Deleted the question with id: '+question.id)
-      } else {
-        console.error('Failed to delete question:', response.statusText);
-      }
+      await deleteDoc(doc(db, 'questions', question.id));
+      console.log('Deleted the question with id: ' + question.id);
+      window.location.reload(); 
     } catch (error) {
       console.error('Error deleting question:', error);
     }
@@ -38,8 +36,8 @@ const QuestionComponent: React.FC<QuestionProps> = ({ question, onOptionSelect, 
     <div className="question-container">
    
       <div className="question-title">
-        <h2>{title}</h2>
-        <div onClick={handleDeleteClick}>Delete question</div>
+        <h2>Q{index+1}. {title}</h2>
+        <div onClick={handleDeleteClick} hidden={!showCorrectOption}>Delete question</div>
       </div>
       {url && (
         <div className="audio-container">

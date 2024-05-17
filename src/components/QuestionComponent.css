@@ -14,12 +14,17 @@
  display: flex;
  font-size: x-large;
  font-weight: bold;
+ justify-content: space-between;
 }
 
 .question-title div{
  font-size: small;
  place-content: center;
  color: red;
+}
+
+.question-title input {
+ width: 90%;
 }
 
 
@@ -41,14 +46,14 @@
 }
 
 .option {
- border: 2px solid #ccc; /* Light gray border */
+ border: 2px solid #ccc;
  border-radius: 5px;
  padding: 15px;
- background-color: #fff; /* White background */
+ background-color: #fff;
 }
 
 .option:hover {
- background-color: #f0f0f0; /* Light gray background on hover */
+ background-color: #f0f0f0;
 }
 
 .correct-option {
@@ -72,9 +77,16 @@
  margin-right: 5px;
 }
 
-.submit-form-btn{
+.submit-form-btn {
  width: 200px;
  margin: auto;
  margin-top: 20px;
 }
+
+@media screen and (max-width: 768px) {
+ .options {
+   grid-template-columns: 1fr; /* Show options in a single column */
+ }
+}
+
 

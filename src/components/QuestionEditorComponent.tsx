@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // Import uuid for generating unique IDs
-import questionsdata from '../questionsdata.json';
 import { Question } from '../types';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore/lite';
+import { db } from '../firebase';
 
 const QuestionEditorComponent: React.FC = () => {
   const [formData, setFormData] = useState<Question>({
@@ -22,17 +23,12 @@ const QuestionEditorComponent: React.FC = () => {
     }));
   };
 
-const handleSubmit = async () => {
-  try {
-    const newQuestionWithId = { ...formData, id: uuidv4() }; // Include a UUID for the new question
-    const response = await fetch('https://34.16.160.151:5000/api/questions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ newQuestion: newQuestionWithId }),
-    });
-    if (response.ok) {
+  const handleSubmit = async () => {
+    try {
+      const newQuestion = { ...formData, id: uuidv4(),
+        createdAt: serverTimestamp()
+       }; // Generate a UUID for the new question
+      await addDoc(collection(db, 'questions'), newQuestion); // Add the new question to Firestore
       console.log('Question added successfully.');
       setFormData({
         id: '',
@@ -42,17 +38,13 @@ const handleSubmit = async () => {
         correct_option: '',
       });
       setIsEditOn(false);
+      window.location.reload();
       // Optionally, perform any additional actions (e.g., reset form, display success message)
-    } else {
-      console.error('Failed to add question:', response.statusText);
+    } catch (error) {
+      console.error('An error occurred:', error);
       // Handle error (e.g., display error message to user)
     }
-  } catch (error) {
-    console.error('An error occurred:', error);
-    // Handle error (e.g., display error message to user)
-  }
-};
-
+  };
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { value } = e.target;
@@ -62,7 +54,6 @@ const handleSubmit = async () => {
     }));
   };
   
-
   return (
     <div>
     <button onClick={()=>setIsEditOn(!isEditOn)}>Add question</button> 
